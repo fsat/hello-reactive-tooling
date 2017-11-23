@@ -8,7 +8,9 @@ lazy val `hello-reactive-tooling` = (project in file("."))
   .aggregate(frontend)
 
 lazy val frontend = (project in file("frontend"))
-  .enablePlugins(PlayScala)
+  .enablePlugins(PlayScala, SbtReactiveAppPlugin)
   .settings(
+    reactiveLibVersion := "0.1.0-SNAPSHOT",
+    // This is required to configure Play's application loader
     libraryDependencies += guice
   )
