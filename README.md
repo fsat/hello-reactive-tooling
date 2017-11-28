@@ -123,9 +123,7 @@ $ curl -vk $(minikube service --url --https nginx-ingress | tail -n 1)
 
 ## Outstanding issues
 
-* The `enablePlayHttpBinding := true` setting should be set automatically.
 * The `namespace` setting should be set based on the root project's name.
-* If `namespace` is set, the `dockerRepository` setting should be set to match.
 * Play's [Allowed Host Filter](https://www.playframework.com/documentation/2.6.x/AllowedHostsFilter) need to be configured to allow ingress access. _Not sure how to do this_ since the ingress address must be known by the application during startup, and the value of allowed address must be updated if the ingress address is changed.
 
 ##
