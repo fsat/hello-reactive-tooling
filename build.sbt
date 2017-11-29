@@ -11,14 +11,6 @@ lazy val frontend = (project in file("frontend"))
   .enablePlugins(PlayScala, SbtReactiveAppPlugin)
   .settings(
     reactiveLibVersion := "0.1.0-SNAPSHOT",
-
-    // SBT Reactive TODO
-
-    // - Setting namespace in ThisBuild from top level project name?
-    namespace := Some("hello"),
-
-    // - We need to configure allowed host filter to allow access from within container - HOW?
-
     // ------
 
     // This is required to configure Play's application loader
