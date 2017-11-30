@@ -92,12 +92,10 @@ hello-reactive-tooling/frontend                        0.0.1               7fea8
 Deploy the image to minikube using the following command.
 
 ```bash
-$ rp generate-deployment hello-reactive-tooling/frontend:0.0.1 --target kubernetes --kubernetes-version 1.6 --env APPLICATION_SECRET=hereiam | kubectl apply -f -
+$ rp generate-deployment hello-reactive-tooling/frontend:0.0.1 --target kubernetes --kubernetes-version 1.6 --env JAVA_OPTS="-Dplay.http.secret.key=hereiam -Dplay.filters.hosts.allowed.0=$(minikube ip)" | kubectl apply -f -
 ```
 
 In the command above, the `--kubernetes-version` is set to `1.6`. Please update accordingly to `1.7` or `1.8` to match the version of Kubernetes running on your installed Minikube.
-
-The `APPLICATION_SECRET` environment variable is set to `hereiam`.
 
 ## Accessing the application
 
