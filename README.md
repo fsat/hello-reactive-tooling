@@ -19,22 +19,6 @@ At the point of writing the target runtime supported is Kubernetes, although the
 
 _These steps are temporary until we have Reactive Deployment Tool released and published_
 
-### Publish Reactive Lib locally
-
-Clone the project from [Reactive Lib](https://github.com/lightbend/reactive-lib) and publish locally.
-
-```bash
-$ sbt publishLocal
-```
-
-### Publish SBT Reactive App locally
-
-Clone the project from [SBT Reactive App](https://github.com/lightbend/sbt-reactive-app) and publish locally.
-
-```bash
-$ sbt "^ publishLocal"
-```
-
 ### Build Reactive CLI
 
 Clone the project from [Reactive CLI](https://github.com/typesafehub/reactive-cli) and build the native executable.
