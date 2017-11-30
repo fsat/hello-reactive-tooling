@@ -17,32 +17,17 @@ At the point of writing the target runtime supported is Kubernetes, although the
 
 ## Setup - temporary
 
-_These steps are temporary until we have Reactive Deployment Tool released and published_
+_These steps are temporary until we have the public release version of Reactive Deployment Tool released and published_
 
-### Build Reactive CLI
+### Publish Akka Management locally
 
-Clone the project from [Reactive CLI](https://github.com/typesafehub/reactive-cli) and build the native executable.
-
-_TEMPORARY: checkout commit 8211e6b6fb908552cfab4eee1bb577c6cc9112ed until [47](https://github.com/lightbend/reactive-cli/pull/47) is merged_
+Clone the project from [SBT Reactive App](https://github.com/lightbend/reactive-lib) and execute the following script to publish locally.
 
 ```bash
-$ sbt cli/nativeLink
+$ sh publish-akka-management.sh
 ```
 
-Copy the native executable into a path outside of the project:
-
-```bash
-$ mkdir -p ~/tmp/reactive-cli/bin
-$ cp cli/target/scala-2.11/*out ~/tmp/reactive-cli/bin/rp
-```
-
-Add the executable into `PATH` environment variable:
-
-```bash
-$ export PATH=${PATH}:~/tmp/reactive-cli/bin
-```
-
-### Libcurl (MacOS only)
+### Ensure correct libcurl is used (MacOS only)
 
 _Only follow this step for MacOS. This will ensure correct version of `libcurl` with correct TLS support is used._
 
@@ -55,8 +40,49 @@ $ brew install curl --with-openssl
 Export the environment variables to ensure correct version of `libcurl` is being used.
 
 ```bash
-$ export LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:/usr/local/opt/curl/lib"
 $ export DYLD_LIBRARY_PATH="${DYLD_LIBRARY_PATH}:/usr/local/opt/curl/lib"
+```
+
+## Setup
+
+Here are the setup steps.
+
+### Install Reactive CLI
+
+Pick the installation command appropriate for your operating system.
+
+_At this point in time on Linux and MacOS are supported. We haven't forgotten about windows support._
+
+The following steps is taken from the [Tooling Notes](https://docs.google.com/a/lightbend.com/document/d/1OpvzJmLJodZtb6L4HRyQZNpFwALMEkzIxLB2YkfD_1o/edit?usp=sharing) document which I assume will be hosted in the actual documentation site later on.
+
+#### Debian-based distros
+
+```bash
+# Setup Repository
+$ wget -qO - https://downloads.lightbend.com/rp/keys/bintray-debian | sudo apt-key add - && echo "deb https://dl.bintray.com/lightbend/deb $(lsb_release -cs) main" | sudo dd status=none of=/etc/apt/sources.list.d/lightbend.list && sudo apt-get update
+
+# Install CLI
+$ sudo apt-get install reactive-cli
+```
+
+#### RPM-based distros
+
+```bash
+# Setup Repository
+$ wget -qO - https://bintray.com/lightbend/rpm/rpm | sudo dd status=none of=/etc/yum.repos.d/bintray-lightbend-rpm.repo
+
+# Install CLI
+$ sudo yum install reactive-cli
+```
+
+#### MacOS
+
+```bash
+# Setup Repository
+$ brew tap lightbend/tools
+
+# Install CLI
+$ brew install lightbend/tools/reactive-cli
 ```
 
 ## Deploying to Minikube
