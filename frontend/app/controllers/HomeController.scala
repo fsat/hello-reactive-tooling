@@ -21,7 +21,7 @@ class HomeController @Inject()(cc: ControllerComponents, ws: WSClient)(implicit 
   }
 
   def simple(input: String) = Action.async {
-    ServiceLocator.lookupOne("simple")
+    ServiceLocator.lookupOne("simple-service", "lagom-http-api")
       .flatMap {
         case Some(service) =>
           log.info(s"The service [simple] is located at [$service]")
@@ -40,17 +40,23 @@ class HomeController @Inject()(cc: ControllerComponents, ws: WSClient)(implicit 
       }
   }
 
+  def srvByService(serviceName: String) = srv(serviceName, endpointName = None)
+
+  def srvByEndpoint(serviceName: String, endpointName: String) = srv(serviceName, endpointName = Some(endpointName))
+
   /**
     * Return addresses found by the [[ServiceLocator]], otherwise returns [[NotFound]].
     */
-  def srv(input: String) = Action.async {
-    ServiceLocator.lookup(input)
+  private def srv(serviceName: String, endpointName: Option[String] = None) = Action.async {
+    endpointName.fold(ServiceLocator.lookup(serviceName))(ServiceLocator.lookup(serviceName, _))
       .map { addresses =>
-        log.info(s"SRV lookup for [$input] - result: $addresses")
+        val lookupRequest = endpointName.fold(s"[$serviceName]")(v => s"[$serviceName/$v]")
+
+        log.info(s"SRV lookup for [$lookupRequest] - result: $addresses")
         if (addresses.nonEmpty)
           Ok(addresses.map(_.uri.toString).mkString("\n"))
         else
-          NotFound(s"SRV entry [$input] can't be found")
+          NotFound(s"SRV entry [$lookupRequest] can't be found")
       }
   }
 }

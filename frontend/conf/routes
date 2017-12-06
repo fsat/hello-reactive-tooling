@@ -4,7 +4,8 @@
 # ~~~~
 
 # An example controller showing a sample home page
-GET     /srv/:entry                 controllers.HomeController.srv(entry)
+GET     /srv/:name/:endpoint        controllers.HomeController.srvByEndpoint(name, endpoint)
+GET     /srv/:name                  controllers.HomeController.srvByService(name)
 GET     /simple/:text               controllers.HomeController.simple(text)
 GET     /                           controllers.HomeController.index
 
