@@ -93,7 +93,7 @@ $ rp generate-kubernetes-deployment hello-reactive-tooling/simple-impl:0.0.1 --g
 Run the following command to access the deployed `frontend`.
 
 ```bash
-$ curl -vk $(minikube service --url --https nginx-ingress | tail -n 1)
+$ curl -vLk "https://$(minikube ip)/"
 ```
 
 ## Outstanding issues
