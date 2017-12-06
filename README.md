@@ -15,28 +15,6 @@ At the point of writing the target runtime supported is Kubernetes, although the
 * [OpenJDK 8](http://openjdk.java.net/install/) or [Oracle Java 8](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
 * [SBT](http://www.scala-sbt.org/download.html)
 
-## Setup - temporary
-
-### Ensure correct libcurl is used (MacOS only)
-
-_Only follow this step for MacOS. This will ensure correct version of `libcurl` with correct TLS support is used._
-
-Install `libcurl` with correct TLS support.
-
-```bash
-$ brew install curl --with-openssl
-```
-
-Export the environment variables to ensure correct version of `libcurl` is being used.
-
-```bash
-$ export DYLD_LIBRARY_PATH="${DYLD_LIBRARY_PATH}:/usr/local/opt/curl/lib"
-```
-
-## Setup
-
-Here are the setup steps.
-
 ### Install Reactive CLI
 
 Pick the installation command appropriate for your operating system.
