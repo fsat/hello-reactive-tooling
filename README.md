@@ -17,16 +17,6 @@ At the point of writing the target runtime supported is Kubernetes, although the
 
 ## Setup - temporary
 
-_These steps are temporary until we have the public release version of Reactive Deployment Tool released and published_
-
-### Publish Akka Management locally
-
-Clone the project from [SBT Reactive App](https://github.com/lightbend/reactive-lib) and execute the following script to publish locally.
-
-```bash
-$ sh publish-akka-management.sh
-```
-
 ### Ensure correct libcurl is used (MacOS only)
 
 _Only follow this step for MacOS. This will ensure correct version of `libcurl` with correct TLS support is used._
@@ -104,24 +94,21 @@ $ cd hello-reactive-tooling
 Publish the project as Docker images into Minikube.
 
 ```bash
-$ sbt frontend/docker:publishLocal
+$ sbt frontend/docker:publishLocal simple-impl/docker:publishLocal
 ```
 
-This will publish the project as a docker image called `frontend` tagged with `0.0.1`.
+Deploy the `frontend` to minikube using the following command.
 
 ```bash
-$ docker images | grep frontend | grep 0.0.1
-REPOSITORY                                             TAG                 IMAGE ID            CREATED             SIZE
-hello-reactive-tooling/frontend                        0.0.1               7fea8f5b2a06        18 minutes ago      166MB
+$ rp generate-kubernetes-deployment hello-reactive-tooling/frontend:0.0.1 --env JAVA_OPTS="-Dplay.http.secret.key=hereiam -Dplay.filters.hosts.allowed.0=$(minikube ip)" | kubectl apply -f -
 ```
 
-Deploy the image to minikube using the following command.
+Deploy the `simple-impl` to minikube using the following command. Note for the `simple-impl` we don't generate the Ingress resource as we don't wish to expose the endpoint outside of Kubernetes.
 
 ```bash
-$ rp generate-deployment hello-reactive-tooling/frontend:0.0.1 --target kubernetes --kubernetes-version 1.6 --env JAVA_OPTS="-Dplay.http.secret.key=hereiam -Dplay.filters.hosts.allowed.0=$(minikube ip)" | kubectl apply -f -
+$ rp generate-kubernetes-deployment hello-reactive-tooling/simple-impl:0.0.1 --generate-services --generate-pod-controllers --env JAVA_OPTS="-Dplay.http.secret.key=simple" | kubectl apply -f -
 ```
 
-In the command above, the `--kubernetes-version` is set to `1.6`. Please update accordingly to `1.7` or `1.8` to match the version of Kubernetes running on your installed Minikube.
 
 ## Accessing the application
 
