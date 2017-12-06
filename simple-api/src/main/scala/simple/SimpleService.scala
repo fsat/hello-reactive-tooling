@@ -1,6 +1,7 @@
 package simple
 
 import akka.NotUsed
+import com.lightbend.lagom.scaladsl.api.transport.Method
 import com.lightbend.lagom.scaladsl.api.{Descriptor, Service, ServiceCall}
 
 trait SimpleService extends Service {
@@ -8,8 +9,8 @@ trait SimpleService extends Service {
 
   override final def descriptor: Descriptor = {
     import Service._
-    named("simple")
-      .withCalls(pathCall("/simple/:text", simple _))
+    named("simple-service")
+      .withCalls(restCall(Method.GET, "/simple/:text", simple _))
       .withAutoAcl(true)
   }
 }

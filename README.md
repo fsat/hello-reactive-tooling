@@ -78,7 +78,9 @@ $ sbt frontend/docker:publishLocal simple-impl/docker:publishLocal
 Deploy the `frontend` to minikube using the following command.
 
 ```bash
-$ rp generate-kubernetes-deployment hello-reactive-tooling/frontend:0.0.1 --env JAVA_OPTS="-Dplay.http.secret.key=hereiam -Dplay.filters.hosts.allowed.0=$(minikube ip)" | kubectl apply -f -
+$ rp generate-kubernetes-deployment hello-reactive-tooling/frontend:0.0.1 \
+    --external-service simple=_lagom-http-api._tcp.simple-service.default.svc.cluster.local \
+    --env JAVA_OPTS="-Dplay.http.secret.key=hereiam -Dplay.filters.hosts.allowed.0=$(minikube ip)" | kubectl apply -f -
 ```
 
 Deploy the `simple-impl` to minikube using the following command. Note for the `simple-impl` we don't generate the Ingress resource as we don't wish to expose the endpoint outside of Kubernetes.
