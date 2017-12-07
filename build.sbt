@@ -11,7 +11,9 @@ lazy val `hello-reactive-tooling` = (project in file("."))
   .aggregate(
     frontend,
     `simple-api`,
-    `simple-impl`
+    `simple-impl`,
+    `clustered-api`,
+    `clustered-impl`
   )
 
 lazy val frontend = (project in file("frontend"))
@@ -26,9 +28,7 @@ lazy val frontend = (project in file("frontend"))
 
 lazy val `simple-api` = (project in file("simple-api"))
   .settings(
-    libraryDependencies ++= Seq(
-      lagomScaladslApi
-    )
+    libraryDependencies += lagomScaladslApi
   )
 
 lazy val `simple-impl` = (project in file("simple-impl"))
@@ -38,3 +38,16 @@ lazy val `simple-impl` = (project in file("simple-impl"))
     libraryDependencies += guice
   )
   .dependsOn(`simple-api`)
+
+lazy val `clustered-api` = (project in file("clustered-api"))
+  .settings(
+    libraryDependencies += lagomScaladslApi
+  )
+
+lazy val `clustered-impl` = (project in file("clustered-impl"))
+  .enablePlugins(LagomScala, SbtReactiveAppPlugin)
+  .settings(
+    // This is required to configure Play's application loader
+    libraryDependencies += guice
+  )
+  .dependsOn(`clustered-api`)
