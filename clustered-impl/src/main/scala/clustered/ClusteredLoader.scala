@@ -5,6 +5,7 @@ import com.lightbend.lagom.scaladsl.client.ConfigurationServiceLocatorComponents
 import com.lightbend.lagom.scaladsl.devmode.LagomDevModeComponents
 import com.lightbend.lagom.scaladsl.server.{LagomApplication, LagomApplicationContext, LagomApplicationLoader, LagomServer}
 import play.api.libs.ws.ahc.AhcWSComponents
+import com.softwaremill.macwire._
 
 class ClusteredLoader extends LagomApplicationLoader {
   override def load(context: LagomApplicationContext): LagomApplication =
@@ -19,5 +20,6 @@ class ClusteredLoader extends LagomApplicationLoader {
 abstract class ClusteredApplication(context: LagomApplicationContext)
   extends LagomApplication(context)
   with AhcWSComponents {
-  override lazy val lagomServer: LagomServer = serverFor[ClusteredService](new ClusteredServiceImpl)
+  override lazy val lagomServer: LagomServer = serverFor[ClusteredService](wire[ClusteredServiceImpl])
+  override lazy val optionalJsonSerializerRegistry = Some(MessagesRegistry)
 }
