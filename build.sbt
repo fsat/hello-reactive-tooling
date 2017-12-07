@@ -7,6 +7,14 @@ scalaVersion in ThisBuild := "2.11.8"
 lagomCassandraEnabled in ThisBuild := false
 lagomKafkaEnabled in ThisBuild := false
 
+lazy val Libraries = new {
+  object Version {
+    val macwire = "2.2.5"
+  }
+
+  val macwire = "com.softwaremill.macwire" %% "macros" % Version.macwire % "provided"
+}
+
 lazy val `hello-reactive-tooling` = (project in file("."))
   .aggregate(
     frontend,
@@ -17,7 +25,7 @@ lazy val `hello-reactive-tooling` = (project in file("."))
   )
 
 lazy val frontend = (project in file("frontend"))
-  .enablePlugins(PlayScala, SbtReactiveAppPlugin)
+  .enablePlugins(PlayScala, LagomPlay, SbtReactiveAppPlugin)
   .settings(
     libraryDependencies ++= Seq(
       guice, // This is required to configure Play's application loader
@@ -50,4 +58,4 @@ lazy val `clustered-impl` = (project in file("clustered-impl"))
       "com.softwaremill.macwire" %% "macros" % "2.2.5" % "provided"
     )
   )
-  .dependsOn(`clustered-api`)
+  .dependsOn(`clustered-api`, `simple-api`)

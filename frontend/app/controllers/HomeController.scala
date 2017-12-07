@@ -21,24 +21,32 @@ class HomeController @Inject()(cc: ControllerComponents, ws: WSClient)(implicit 
   }
 
   def simple(input: String) = Action.async {
-    ServiceLocator.lookupOne("simple-service", "lagom-http-api")
+    invokeLagomService("simple-service", s"/simple/$input")
+  }
+
+  def clustered(input: String) = Action.async {
+    invokeLagomService("clustered-service", s"/clustered/$input")
+  }
+
+  def forward(input: String) = Action.async {
+    invokeLagomService("clustered-service", s"/forward/$input")
+  }
+
+  private def invokeLagomService(serviceName: String, requestUri: String): Future[Result] =
+    ServiceLocator.lookupOne(serviceName, "lagom-http-api")
       .flatMap {
         case Some(service) =>
-          log.info(s"The service [simple] is located at [$service]")
-          val requestUrl = s"http://${service.uri.getHost}:${service.uri.getPort}/simple/$input"
-          log.info(s"Requesting [$requestUrl]")
-          ws.url(requestUrl)
+          val url = s"http://${service.uri.getHost}:${service.uri.getPort}$requestUri"
+          ws.url(url)
             .execute()
             .map { response =>
-              log.info(s"[$requestUrl] - response [$response]")
               Ok(response.body[String])
             }
 
         case None =>
-          log.warn(s"The service [simple] is not found")
-          Future.successful(InternalServerError("Unable to find a service called [simple]"))
+          log.warn(s"The service [$serviceName] is not found")
+          Future.successful(InternalServerError(s"Unable to find a service called [$serviceName]"))
       }
-  }
 
   def srvByService(serviceName: String) = srv(serviceName, endpointName = None)
 

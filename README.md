@@ -84,7 +84,7 @@ $ rp generate-kubernetes-deployment hello-reactive-tooling/simple-impl:0.0.1 --g
 Similarly, deploy the `clustered-impl`. We also won't expose `clustered-impl` outside of Kubernetes. We also scale the `clustered-impl` to `3` instances to test the cluster functionality.
 
 ```bash
-$ rp generate-kubernetes-deployment hello-reactive-tooling/clustered-impl:0.0.1 --generate-services --generate-pod-controllers --pod-controller-replicas 3 --env JAVA_OPTS="-Dplay.http.secret.key=clustered" | kubectl apply -f -
+$ rp generate-kubernetes-deployment hello-reactive-tooling/clustered-impl:0.0.1 --generate-services --generate-pod-controllers --pod-controller-replicas 3 --env JAVA_OPTS="-Dplay.http.secret.key=clustered" --external-service simple-service=_lagom-http-api._tcp.simple-service.default.svc.cluster.local | kubectl apply -f -
 ```
 
 

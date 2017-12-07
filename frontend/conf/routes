@@ -6,6 +6,8 @@
 # An example controller showing a sample home page
 GET     /srv/:name/:endpoint        controllers.HomeController.srvByEndpoint(name, endpoint)
 GET     /srv/:name                  controllers.HomeController.srvByService(name)
+GET     /forward/:text              controllers.HomeController.forward(text)
+GET     /clustered/:text            controllers.HomeController.clustered(text)
 GET     /simple/:text               controllers.HomeController.simple(text)
 GET     /                           controllers.HomeController.index
 
