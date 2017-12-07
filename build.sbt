@@ -46,6 +46,7 @@ lazy val `clustered-impl` = (project in file("clustered-impl"))
   .enablePlugins(LagomScala, SbtReactiveAppPlugin)
   .settings(
     libraryDependencies ++= Seq(
+      lagomScaladslCluster,
       "com.softwaremill.macwire" %% "macros" % "2.2.5" % "provided"
     )
   )
