@@ -104,6 +104,65 @@ Run the following command to access the deployed `frontend`.
 $ curl -vLk "https://$(minikube ip)/"
 ```
 
+The `frontend` application exposes various other endpoints.
+
+### Accessing the `simple-impl` through `frontend`
+
+Run the following command to access the `simple-impl` through `frontend`.
+
+```bash
+$ curl -vLk "https://$(minikube ip)/simple/hello"
+```
+
+The `frontend` will invoke the `ServiceLocator` provided by `reactive-lib` to locate `simple-impl` service.
+
+### Accessing the `clustered-impl` through `frontend`
+
+Run the following command to access the `clustered-impl` through `frontend`.
+
+```bash
+$ curl -vLk "https://$(minikube ip)/clustered/hello"
+```
+
+The `frontend` will invoke the `ServiceLocator` provided by `reactive-lib` to locate `clustered-impl` service.
+
+### Accessing both `clustered-impl` and `simple-impl` through `frontend`
+
+Run the following command.
+
+```bash
+$ curl -vLk "https://$(minikube ip)/forward/hello"
+```
+
+* The `frontend` will invoke the `ServiceLocator` provided by `reactive-lib` to locate `clustered-impl` service.
+* The `clustered-impl` service will invoke Lagom client provided by the `service-api`. Internally Lagom will invoke the `LagomServiceLocator` provided by `reactive-lib`.
+
+### Performing SRV lookup through `frontend`
+
+Run the following command, replacing `<service-name>` with the actual service name _or_ the SRV entry you'd like to find. This command will return a list of address for a given service name.
+
+```bash
+$ curl -vLk "https://$(minikube ip)/srv/<service-name>"
+```
+
+Example:
+
+```bash
+$ curl -vLk "https://$(minikube ip)/srv/_cql._tcp.cassandra-cassandra.cassandra.svc.cluster.local"
+```
+
+Run the following command, replacing `<service-name>` with the actual service name and `<endpoint-name>` with the actual endpoint name. This command will return a list of address for a given service name and endpoint name.
+
+```bash
+$ curl -vLk "https://$(minikube ip)/srv/<service-name>/<endpoint-name>"
+```
+
+Example:
+
+```bash
+$ curl -vLk "https://$(minikube ip)/srv/simple-service/lagom-http-api"
+```
+
 ## Outstanding issues
 
 * Reactive Lib should configure the settings so user can simply specify `RP_PLAY_APPLICATION_SECRET` or `APPLICATION_SECRET` from CLI's `--env` switch.
