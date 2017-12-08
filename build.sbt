@@ -7,14 +7,6 @@ scalaVersion in ThisBuild := "2.11.8"
 lagomCassandraEnabled in ThisBuild := false
 lagomKafkaEnabled in ThisBuild := false
 
-lazy val Libraries = new {
-  object Version {
-    val macwire = "2.2.5"
-  }
-
-  val macwire = "com.softwaremill.macwire" %% "macros" % Version.macwire % "provided"
-}
-
 lazy val `hello-reactive-tooling` = (project in file("."))
   .aggregate(
     frontend,
@@ -53,9 +45,12 @@ lazy val `clustered-api` = (project in file("clustered-api"))
 lazy val `clustered-impl` = (project in file("clustered-impl"))
   .enablePlugins(LagomScala, SbtReactiveAppPlugin)
   .settings(
-    libraryDependencies ++= Seq(
-      lagomScaladslCluster,
-      "com.softwaremill.macwire" %% "macros" % "2.2.5" % "provided"
-    )
+    libraryDependencies ++= {
+      Seq(
+        lagomScaladslCluster,
+        "com.lightbend.rp" %% "reactive-lib-service-discovery-lagom14-scala" % reactiveLibVersion.value, // FIXME: this should come from SBT Reactive App,
+        "com.softwaremill.macwire" %% "macros" % "2.2.5" % "provided"
+      )
+    }
   )
   .dependsOn(`clustered-api`, `simple-api`)
