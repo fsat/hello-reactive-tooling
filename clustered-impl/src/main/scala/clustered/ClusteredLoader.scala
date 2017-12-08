@@ -1,16 +1,19 @@
 package clustered
 
-import com.lightbend.lagom.scaladsl.api.Descriptor
-import com.lightbend.lagom.scaladsl.client.ConfigurationServiceLocatorComponents
+import com.lightbend.lagom.scaladsl.api.{Descriptor, ServiceLocator}
+import com.lightbend.lagom.scaladsl.client.CircuitBreakerComponents
 import com.lightbend.lagom.scaladsl.devmode.LagomDevModeComponents
 import com.lightbend.lagom.scaladsl.server.{LagomApplication, LagomApplicationContext, LagomApplicationLoader, LagomServer}
+import com.lightbend.rp.servicediscovery.lagom.scaladsl.LagomServiceLocator
 import play.api.libs.ws.ahc.AhcWSComponents
 import com.softwaremill.macwire._
 import simple.SimpleService
 
 class ClusteredLoader extends LagomApplicationLoader {
   override def load(context: LagomApplicationContext): LagomApplication =
-    new ClusteredApplication(context) with ConfigurationServiceLocatorComponents
+    new ClusteredApplication(context) with CircuitBreakerComponents {
+      lazy val serviceLocator: ServiceLocator = new LagomServiceLocator(circuitBreakersPanel)(actorSystem, executionContext)
+    }
 
   override def loadDevMode(context: LagomApplicationContext): LagomApplication =
     new ClusteredApplication(context) with LagomDevModeComponents
