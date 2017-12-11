@@ -49,6 +49,7 @@ lazy val `clustered-impl` = (project in file("clustered-impl"))
       Seq(
         lagomScaladslCluster,
         "com.lightbend.rp" %% "reactive-lib-service-discovery-lagom14-scala" % reactiveLibVersion.value, // FIXME: this should come from SBT Reactive App,
+        "com.typesafe.akka" %% "akka-distributed-data" % "2.5.6",
         "com.softwaremill.macwire" %% "macros" % "2.2.5" % "provided"
       )
     }

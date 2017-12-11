@@ -1,12 +1,34 @@
 package clustered
 
-import akka.actor.{Actor, Props}
+import akka.actor.{Actor, ActorRef, ActorSystem, Props}
+import akka.cluster.sharding.{ClusterSharding, ClusterShardingSettings, ShardRegion}
 import play.api.libs.json.{Format, Json}
 
 object ClusterShardedActor {
   val Name = "cluster-sharded"
 
   def props: Props = Props(new ClusterShardedActor)
+
+  object ShardedSetup {
+    val NumberOfShards = 10
+
+    val actorNameWithRequest: ShardRegion.ExtractEntityId = {
+      case v: Request => Name -> v
+    }
+
+    val textByShard: ShardRegion.ExtractShardId = {
+      case Request(text) => (text.length % NumberOfShards).toString
+    }
+
+    def create(system: ActorSystem): ActorRef =
+      ClusterSharding(system).start(
+        typeName = Name,
+        entityProps = props,
+        settings = ClusterShardingSettings(system).withRememberEntities(rememberEntities = false),
+        extractEntityId = actorNameWithRequest,
+        extractShardId = textByShard
+      )
+  }
 
   sealed trait Message
 

@@ -13,7 +13,7 @@ class ClusteredServiceImpl(system: ActorSystem, simpleService: SimpleService, se
   val log = LoggerFactory.getLogger(this.getClass)
 
   val settings = Settings(system)
-  val actor = system.actorOf(ClusterShardedActor.props, ClusterShardedActor.Name)
+  val actor = ClusterShardedActor.ShardedSetup.create(system)
 
   override def clustered(input: String): ServiceCall[NotUsed, String] = ServiceCall { _ =>
     actor.ask(ClusterShardedActor.Request(input))(settings.askTimeout)
