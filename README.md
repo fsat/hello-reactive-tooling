@@ -8,6 +8,8 @@ This project consists of a simple Play application which has [SBT Reactive App](
 
 At the point of writing the target runtime supported is Kubernetes, although the tool might be extended to support DC/OS and other target runtime.
 
+Refer to `DESIGN.md` to see how the application is put together.
+
 ## Pre-requisite
 
 * [Minikube](https://kubernetes.io/docs/tasks/tools/install-minikube/) installed and running with insecure registry enabled.
