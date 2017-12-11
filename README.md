@@ -166,4 +166,3 @@ $ curl -vLk "https://$(minikube ip)/srv/simple-service/lagom-http-api"
 ## Outstanding issues
 
 * Reactive Lib should configure the settings so user can simply specify `RP_PLAY_APPLICATION_SECRET` or `APPLICATION_SECRET` from CLI's `--env` switch.
-* Play's [Allowed Host Filter](https://www.playframework.com/documentation/2.6.x/AllowedHostsFilter) need to be configured to allow ingress access. _Not sure how to do this_ since the ingress address must be known by the application during startup, and the value of allowed address must be updated if the ingress address is changed.
