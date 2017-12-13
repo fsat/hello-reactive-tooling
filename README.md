@@ -1,6 +1,6 @@
-# Hello-World for Reactive Deployment Tool
+# Hello-World for Platform Tooling
 
-This project is created to test Reactive Deployment Tool.
+This project is created to test Lightbend's Platform Tooling.
 
 ## What's this about?
 
@@ -10,7 +10,7 @@ At the point of writing the target runtime supported is Kubernetes, although the
 
 Refer to `DESIGN.md` to see how the application is put together.
 
-## Pre-requisite
+## Pre-requisites
 
 * [Minikube](https://kubernetes.io/docs/tasks/tools/install-minikube/) installed and running with insecure registry enabled.
 * [Docker](https://docs.docker.com/engine/installation/) command line tools installed and enabled.
@@ -19,41 +19,7 @@ Refer to `DESIGN.md` to see how the application is put together.
 
 ### Install Reactive CLI
 
-Pick the installation command appropriate for your operating system.
-
-_At this point in time on Linux and MacOS are supported. We haven't forgotten about windows support._
-
-The following steps is taken from the [Tooling Notes](https://docs.google.com/a/lightbend.com/document/d/1OpvzJmLJodZtb6L4HRyQZNpFwALMEkzIxLB2YkfD_1o/edit?usp=sharing) document which I assume will be hosted in the actual documentation site later on.
-
-#### Debian-based distros
-
-```bash
-# Setup Repository
-$ wget -qO - https://downloads.lightbend.com/rp/keys/bintray-debian | sudo apt-key add - && echo "deb https://dl.bintray.com/lightbend/deb $(lsb_release -cs) main" | sudo dd status=none of=/etc/apt/sources.list.d/lightbend.list && sudo apt-get update
-
-# Install CLI
-$ sudo apt-get install reactive-cli
-```
-
-#### RPM-based distros
-
-```bash
-# Setup Repository
-$ wget -qO - https://bintray.com/lightbend/rpm/rpm | sudo dd status=none of=/etc/yum.repos.d/bintray-lightbend-rpm.repo
-
-# Install CLI
-$ sudo yum install reactive-cli
-```
-
-#### MacOS
-
-```bash
-# Setup Repository
-$ brew tap lightbend/tools
-
-# Install CLI
-$ brew install lightbend/tools/reactive-cli
-```
+See the [Platform Tooling](https://s3-us-west-2.amazonaws.com/rp-tooling-temp-docs/deployment-setup.html#install-the-cli) documentation.
 
 ## Deploying to Minikube
 
@@ -164,7 +130,3 @@ Example:
 ```bash
 $ curl -vLk "https://$(minikube ip)/srv/simple-service/lagom-http-api"
 ```
-
-## Outstanding issues
-
-* Reactive Lib should configure the settings so user can simply specify `RP_PLAY_APPLICATION_SECRET` or `APPLICATION_SECRET` from CLI's `--env` switch.
