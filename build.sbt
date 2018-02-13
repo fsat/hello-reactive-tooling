@@ -1,6 +1,7 @@
 organization in ThisBuild := "com.lightbend"
 version in ThisBuild := "0.0.1"
 
+
 // the Scala version that will be used for cross-compiled libraries
 scalaVersion in ThisBuild := "2.11.8"
 
@@ -23,7 +24,8 @@ lazy val frontend = (project in file("frontend"))
     libraryDependencies ++= Seq(
       guice, // This is required to configure Play's application loader
       ws
-    )
+    ),
+    httpIngressPaths := Seq("/")
   )
 
 lazy val `simple-api` = (project in file("simple-api"))
@@ -49,9 +51,13 @@ lazy val `clustered-impl` = (project in file("clustered-impl"))
     libraryDependencies ++= {
       Seq(
         lagomScaladslCluster,
+        "com.typesafe.akka" %% "akka-cluster-sharding" % "2.5.6",
         "com.typesafe.akka" %% "akka-distributed-data" % "2.5.6",
         "com.softwaremill.macwire" %% "macros" % "2.2.5" % "provided"
-      )
-    }
+      ),
+    },
+
+    // For sbt 'deploy minikube', use 3 replicas
+    deployMinikubeAkkaClusterBootstrapContactPoints := 3
   )
   .dependsOn(`clustered-api`, `simple-api`)

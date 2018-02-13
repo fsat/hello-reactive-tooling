@@ -23,6 +23,26 @@ See the [Platform Tooling](https://s3-us-west-2.amazonaws.com/rp-tooling-temp-do
 
 ## Deploying to Minikube
 
+There's two ways you can deploy to Minikube. There's a manual process which matches what you would typically do in
+a production environment, that is generating resources using `rp` and piping those to `kubectl`.
+
+The SBT task, `deploy minikube`, automates this for you for local development.
+
+Both are documented below.
+
+### Using SBT deploy minikube (Developer workflow)
+
+Use the SBT task to deploy the application. This will build and deploy both applications to your Minikube. Three
+instances of `clustered-impl` will be started (see build.sbt for this configuration).
+
+```bash
+sbt 'deploy minikube'
+```
+
+> You can also run this task directly from within SBT.
+
+### Using command line (Operations workflow)
+
 Setup Minikube Docker environment variables.
 
 ```bash
@@ -52,7 +72,7 @@ $ rp generate-kubernetes-deployment hello-reactive-tooling/simple-impl:0.0.1 --g
 Similarly, deploy the `clustered-impl`. We also won't expose `clustered-impl` outside of Kubernetes. We also scale the `clustered-impl` to `3` instances to test the cluster functionality.
 
 ```bash
-$ rp generate-kubernetes-deployment hello-reactive-tooling/clustered-impl:0.0.1 --generate-services --generate-pod-controllers --pod-controller-replicas 3 --env JAVA_OPTS="-Dplay.http.secret.key=clustered" --external-service simple-service=_lagom-http-api._tcp.simple-service.default.svc.cluster.local | kubectl apply -f -
+$ rp generate-kubernetes-deployment hello-reactive-tooling/clustered-impl:0.0.1 --generate-services --generate-pod-controllers --pod-controller-replicas 3 --env JAVA_OPTS="-Dplay.http.secret.key=clustered" | kubectl apply -f -
 ```
 
 
@@ -116,7 +136,7 @@ $ curl -vLk "https://$(minikube ip)/srv/<service-name>"
 Example:
 
 ```bash
-$ curl -vLk "https://$(minikube ip)/srv/_cql._tcp.cassandra-cassandra.cassandra.svc.cluster.local"
+$ curl -vLk "https://$(minikube ip)/srv/_http._tcp.simple-service.default.svc.cluster.local"
 ```
 
 Run the following command, replacing `<service-name>` with the actual service name and `<endpoint-name>` with the actual endpoint name. This command will return a list of address for a given service name and endpoint name.
@@ -128,5 +148,5 @@ $ curl -vLk "https://$(minikube ip)/srv/<service-name>/<endpoint-name>"
 Example:
 
 ```bash
-$ curl -vLk "https://$(minikube ip)/srv/simple-service/lagom-http-api"
+$ curl -vLk "https://$(minikube ip)/srv/simple-service/http-api"
 ```
