@@ -33,7 +33,7 @@ class HomeController @Inject()(cc: ControllerComponents, ws: WSClient)(implicit 
   }
 
   private def invokeLagomService(serviceName: String, requestUri: String): Future[Result] =
-    ServiceLocator.lookupOne(serviceName, "lagom-http-api")
+    ServiceLocator.lookupOne(serviceName, "http")
       .flatMap {
         case Some(service) =>
           val url = s"http://${service.uri.getHost}:${service.uri.getPort}$requestUri"
