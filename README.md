@@ -1,10 +1,10 @@
-# Hello-World for Platform Tooling
+# Hello-World for Lightbend Orchestration for Kubernetes
 
-This project is an example for [Lightbend Reactive Platform Tooling](https://developer.lightbend.com/docs/reactive-platform-tooling/latest/).
+This project is an example for [Lightbend Orchestration for Kubernetes](https://developer.lightbend.com/docs/lightbend-orchestration-kubernetes/latest/).
 
 ## What's this about?
 
-This project consists of a simple Play application which has [SBT Reactive App](https://github.com/lightbend/sbt-reactive-app) plugin enabled. Using this plugin and the combination of [Reactive CLI](https://github.com/lightbend/reactive-cli), deployment to a target runtime can be done in a seamless and timely manner.
+This project consists of a simple Play application which has the [SBT Reactive App](https://github.com/lightbend/sbt-reactive-app) plugin enabled. Using this plugin and the combination of [Reactive CLI](https://github.com/lightbend/reactive-cli), deployment to a target runtime can be done in a seamless and timely manner.
 
 At the point of writing the target runtime supported is Kubernetes, although the tool might be extended to support DC/OS and other target runtime.
 
@@ -19,7 +19,7 @@ Refer to `DESIGN.md` to see how the application is put together.
 
 ### Install Reactive CLI
 
-See the [Platform Tooling](https://developer.lightbend.com/docs/reactive-platform-tooling/latest/cli-installation.html#install-the-cli) documentation.
+See the [Lightbend Orchestration for Kubernetes](https://developer.lightbend.com/docs/lightbend-orchestration-kubernetes/latest/cli-installation.html#install-the-cli) documentation.
 
 ## Deploying to Minikube
 
