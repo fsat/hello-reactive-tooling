@@ -1,6 +1,6 @@
-# Hello-World for Reactive Deployment Tool
+# Hello-World for Lightbend Orchestration for Kubernetes
 
-The following project is created to test Reactive Deployment tool from Play Scala and Lagom Scala's perspective.
+The following project is created to test [Lightbend Orchestration for Kubernetes](https://developer.lightbend.com/docs/lightbend-orchestration-kubernetes/latest/) from Play Scala and Lagom Scala's perspective.
 
 The project seeks to assert the following functionality:
 
