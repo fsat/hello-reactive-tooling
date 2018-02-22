@@ -66,20 +66,20 @@ $ sbt frontend/docker:publishLocal simple-impl/docker:publishLocal clustered-imp
 Deploy the `simple-impl` to minikube using the following command. Note for the `simple-impl` we don't generate the Ingress resource as we don't wish to expose the endpoint outside of Kubernetes.
 
 ```bash
-$ rp generate-kubernetes-deployment hello-reactive-tooling/simple-impl:0.0.1 --generate-services --generate-pod-controllers --env JAVA_OPTS="-Dplay.http.secret.key=simple" | kubectl apply -f -
+$ rp generate-kubernetes-resources simple-impl:0.0.1 --generate-services --generate-pod-controllers --env JAVA_OPTS="-Dplay.http.secret.key=simple" | kubectl apply -f -
 ```
 
 Similarly, deploy the `clustered-impl`. We also won't expose `clustered-impl` outside of Kubernetes. We also scale the `clustered-impl` to `3` instances to test the cluster functionality.
 
 ```bash
-$ rp generate-kubernetes-deployment hello-reactive-tooling/clustered-impl:0.0.1 --generate-services --generate-pod-controllers --pod-controller-replicas 3 --env JAVA_OPTS="-Dplay.http.secret.key=clustered" | kubectl apply -f -
+$ rp generate-kubernetes-resources clustered-impl:0.0.1 --generate-services --generate-pod-controllers --pod-controller-replicas 3 --env JAVA_OPTS="-Dplay.http.secret.key=clustered" | kubectl apply -f -
 ```
 
 
 Deploy the `frontend` to minikube using the following command.
 
 ```bash
-$ rp generate-kubernetes-deployment hello-reactive-tooling/frontend:0.0.1 --env JAVA_OPTS="-Dplay.http.secret.key=hereiam -Dplay.filters.hosts.allowed.0=$(minikube ip)" | kubectl apply -f -
+$ rp generate-kubernetes-resources frontend:0.0.1 --generate-all --env JAVA_OPTS="-Dplay.http.secret.key=hereiam -Dplay.filters.hosts.allowed.0=$(minikube ip)" | kubectl apply -f -
 ```
 
 
@@ -148,5 +148,5 @@ $ curl -vLk "https://$(minikube ip)/srv/<service-name>/<endpoint-name>"
 Example:
 
 ```bash
-$ curl -vLk "https://$(minikube ip)/srv/simple-service/http-api"
+$ curl -vLk "https://$(minikube ip)/srv/simple-service/http"
 ```
